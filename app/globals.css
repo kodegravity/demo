@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 231 91% 58%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 231 91% 58%;
+    --radius: 0.75rem;
+  }
+  html { font-family: 'Inter', system-ui, sans-serif; }
+  h1, h2, h3, h4 { font-family: 'Sora', system-ui, sans-serif; letter-spacing: -0.02em; }
+}
+
+.hero-grad {
+  background:
+    radial-gradient(60% 60% at 20% 10%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(40% 40% at 90% 10%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 60%),
+    linear-gradient(135deg, #3b5bff 0%, #2540e8 45%, #1a2dbf 100%);
+}
+
+.dot-grid {
+  background-image: radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.shine {
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shine 3s ease-in-out infinite;
+}
+@keyframes shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.float-slow { animation: floaty 6s ease-in-out infinite; }
+.float-fast { animation: floaty 4s ease-in-out infinite; }
+@keyframes floaty {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.card-hover { transition: transform .35s ease, box-shadow .35s ease, background-color .35s ease, color .35s ease; }
+.card-hover:hover { transform: translateY(-6px); }
