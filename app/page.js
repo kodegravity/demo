@@ -4,8 +4,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   ArrowRight, Cloud, ShieldCheck, Database, Server, Cog, LifeBuoy,
-  CheckCircle2, Sparkles, Rocket, BarChart3, Lock, Workflow, Quote,
-  Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, Menu, X, ChevronDown,
+  CheckCircle2, Sparkles, Rocket, BarChart3, Lock, Workflow,
+  Mail, Phone, MapPin, Menu, X, ChevronDown,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -13,44 +13,37 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
+import Link from 'next/link'
 
 const NAV = [
   { label: 'Home', href: '#home' },
   { label: 'Services', href: '#services' },
   { label: 'Our Company', href: '#company' },
   { label: 'How We Work', href: '#how' },
-  { label: 'Case Studies', href: '#cases' },
+  { label: 'Engagements', href: '#cases' },
 ]
 
 const SERVICES = [
-  { icon: Database, title: 'Data & Analytics', desc: 'Data warehouses, lakes, streaming pipelines, ML/AI models — maintained and scaled across cloud and on-prem.' },
-  { icon: ShieldCheck, title: 'Cyber Security', desc: 'End-to-end security solutions that protect your data, networks and reputation with zero-trust architecture.' },
-  { icon: Cloud, title: 'Cloud Migration', desc: 'Lift, shift and re-architect mission critical workloads to AWS, Azure or GCP — without business disruption.' },
-  { icon: LifeBuoy, title: 'Managed IT Services', desc: 'Proactive, 24×7 managed services delivered by experienced engineers who become an extension of your team.' },
-  { icon: Workflow, title: 'DevOps & Platform', desc: 'CI/CD, Kubernetes, IaC and SRE — modern platforms that ship faster with confidence and observability.' },
-  { icon: Lock, title: 'Data Protection & Recovery', desc: 'Backup, DR and resilience strategies for hybrid environments. Sleep well, recover faster.' },
+  { icon: Database, title: 'Data & Analytics', slug: 'data-analytics', desc: 'Data warehouses, pipelines, reporting, and analytics foundations designed around the decisions your business needs to make.' },
+  { icon: ShieldCheck, title: 'Cyber Security', slug: 'cyber-security', desc: 'Practical security guidance for access, architecture, operations, and the controls that matter in your environment.' },
+  { icon: Cloud, title: 'Cloud Migration', slug: 'cloud-migration', desc: 'Plan and deliver a cloud move or modernization with clear trade-offs, manageable risk, and a path your team can operate.' },
+  { icon: LifeBuoy, title: 'Managed IT Services', slug: 'managed-it-services', desc: 'Ongoing technical support and platform care for teams that need dependable expertise without adding unnecessary complexity.' },
+  { icon: Workflow, title: 'DevOps & Platform', slug: 'devops-platform', desc: 'CI/CD, infrastructure as code, observability, and platform practices that make delivery more repeatable.' },
+  { icon: Lock, title: 'Data Protection & Recovery', slug: 'data-protection-recovery', desc: 'Backup, recovery, and resilience planning for hybrid environments, with priorities based on your business requirements.' },
 ]
 
 const STEPS = [
   { n: '01', title: 'Discover', desc: 'We learn your business, current stack and constraints in a structured discovery sprint.' },
   { n: '02', title: 'Design', desc: 'Pragmatic architecture and a clear, costed roadmap aligned to outcomes — not buzzwords.' },
   { n: '03', title: 'Deliver', desc: 'Senior engineers build alongside your team using modern DevOps practices and quality gates.' },
-  { n: '04', title: 'Operate', desc: 'We run, observe and evolve the platform — measurable SLAs and continuous improvement.' },
+  { n: '04', title: 'Operate', desc: 'We help you run, observe, and evolve the platform with clear ownership and a practical improvement loop.' },
 ]
 
-const TESTIMONIALS = [
-  { quote: 'Hexiware modernised our data platform in 4 months. We finally trust our numbers and ship insights weekly.', name: 'Carl Oliver', role: 'Head of Data, FinPro' },
-  { quote: 'Their engineers feel like our own team. The migration was the smoothest enterprise project we have ever run.', name: 'Christa Smith', role: 'CTO, Northstar Retail' },
-  { quote: 'Knowledgeable, accountable and genuinely senior. They understood our culture and policies from day one.', name: 'Dean Tolle', role: 'VP Engineering, Vaultlane' },
-]
-
-const LOGOS = ['Aurelia', 'Northstar', 'Vaultlane', 'FinPro', 'Sigma', 'Helix']
-
-const STATS = [
-  { k: '120+', v: 'Enterprise projects shipped' },
-  { k: '99.98%', v: 'Managed platform uptime' },
-  { k: '40%', v: 'Avg. cloud cost reduction' },
-  { k: '< 30d', v: 'Time-to-first-value' },
+const ENGAGEMENTS = [
+  { title: 'Cloud foundations', desc: 'A practical starting point for teams planning a migration, platform refresh, or stronger cloud operating model.' },
+  { title: 'Data platforms', desc: 'A clearer path from fragmented data to dependable pipelines, reporting, and decision support.' },
+  { title: 'Security improvements', desc: 'A focused review of architecture, access, and operational controls to reduce avoidable exposure.' },
+  { title: 'Managed operations', desc: 'Ongoing technical support and platform care for teams that need reliable expertise as they grow.' },
 ]
 
 function Logo({ className = '' }) {
@@ -75,10 +68,23 @@ function Navbar() {
       <div className="container mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
         <a href="#home"><Logo /></a>
         <nav className="hidden lg:flex items-center gap-9">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="text-[13px] font-semibold uppercase tracking-wider text-slate-600 hover:text-indigo-600 transition flex items-center gap-1">
+          {NAV.map((n) => n.label === 'Services' ? (
+            <div key={n.href} className="group relative">
+              <a href={n.href} className="flex items-center gap-1 text-[13px] font-semibold uppercase tracking-wider text-slate-600 transition hover:text-indigo-600">
+                {n.label}<ChevronDown className="h-3 w-3 transition group-hover:rotate-180" />
+              </a>
+              <div className="invisible absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 translate-y-2 rounded-2xl border border-slate-200 bg-white p-3 opacity-0 shadow-xl transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                {SERVICES.map((service) => (
+                  <Link key={service.slug} href={`/services/${service.slug}`} className="block rounded-xl px-4 py-3 transition hover:bg-indigo-50">
+                    <span className="block text-sm font-bold text-slate-800">{service.title}</span>
+                    <span className="mt-1 block text-xs leading-relaxed text-slate-500">{service.desc}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <a key={n.href} href={n.href} className="text-[13px] font-semibold uppercase tracking-wider text-slate-600 transition hover:text-indigo-600">
               {n.label}
-              {(n.label === 'Services' || n.label === 'Our Company') && <ChevronDown className="h-3 w-3" />}
             </a>
           ))}
         </nav>
@@ -121,13 +127,13 @@ function HeroIllustration() {
           <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-          <span className="ml-2 text-[10px] font-semibold text-slate-500">hexiware.cloud / overview</span>
+          <span className="ml-2 text-[10px] font-semibold text-slate-500">hexiware / platform view</span>
         </div>
         <div className="grid grid-cols-3 gap-3 mb-4">
-          {['Uptime', 'Cost', 'Latency'].map((t, i) => (
+          {['Cloud', 'Data', 'Security'].map((t, i) => (
             <div key={t} className="rounded-lg bg-slate-50 p-3">
               <div className="text-[10px] text-slate-500">{t}</div>
-              <div className="text-sm font-bold text-slate-800">{['99.98%','-38%','82ms'][i]}</div>
+              <div className="text-sm font-bold text-slate-800">{['Plan','Build','Protect'][i]}</div>
             </div>
           ))}
         </div>
@@ -145,7 +151,7 @@ function HeroIllustration() {
         </div>
         <div className="mt-4 flex items-center gap-2">
           <div className="h-2 flex-1 rounded-full bg-slate-100 overflow-hidden"><div className="h-full w-3/4 bg-indigo-500" /></div>
-          <span className="text-[10px] font-semibold text-slate-500">migration 74%</span>
+          <span className="text-[10px] font-semibold text-slate-500">delivery plan</span>
         </div>
       </motion.div>
 
@@ -171,12 +177,12 @@ function HeroIllustration() {
       <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}
         className="absolute left-4 top-8 bg-white rounded-xl shadow-lg px-3 py-2 flex items-center gap-2">
         <BarChart3 className="h-4 w-4 text-indigo-600" />
-        <span className="text-xs font-semibold text-slate-700">+38% revenue</span>
+        <span className="text-xs font-semibold text-slate-700">Clearer decisions</span>
       </motion.div>
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}
         className="absolute right-2 bottom-10 bg-white rounded-xl shadow-lg px-3 py-2 flex items-center gap-2">
         <ShieldCheck className="h-4 w-4 text-emerald-600" />
-        <span className="text-xs font-semibold text-slate-700">SOC 2 ready</span>
+        <span className="text-xs font-semibold text-slate-700">Security in scope</span>
       </motion.div>
     </div>
   )
@@ -199,8 +205,8 @@ function Hero() {
             <span className="bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-transparent">you can trust.</span>
           </h1>
           <p className="mt-6 text-lg text-indigo-100/90 max-w-xl">
-            Hexiware delivers proactive IT services and secure cloud solutions that reduce risk,
-            enable growth and unlock measurable business outcomes — from data platforms to managed operations.
+            Hexiware helps organisations make better technology decisions and build secure,
+            dependable systems — from data platforms and cloud migration to managed operations.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a href="#services">
@@ -214,9 +220,9 @@ function Hero() {
               </Button>
             </a>
           </div>
-          <div className="mt-10 flex items-center gap-6 text-sm text-indigo-100/80">
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> AWS Premier Partner</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> SOC 2 / ISO 27001</div>
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-indigo-100/80">
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> Toronto-based team</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> Practical, vendor-neutral guidance</div>
           </div>
         </motion.div>
 
@@ -225,11 +231,11 @@ function Hero() {
         </div>
       </div>
 
-      {/* logo strip */}
+      {/* capability strip */}
       <div className="relative bg-white/95 backdrop-blur">
-        <div className="container mx-auto px-6 lg:px-10 py-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 items-center">
-          {LOGOS.map((l) => (
-            <div key={l} className="text-center text-slate-400 font-bold tracking-widest text-lg select-none">{l.toUpperCase()}</div>
+        <div className="container mx-auto px-6 lg:px-10 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6 items-center">
+          {['Cloud', 'Data', 'Security', 'Managed IT'].map((l) => (
+            <div key={l} className="text-center text-slate-400 font-bold tracking-widest text-sm sm:text-base select-none">{l.toUpperCase()}</div>
           ))}
         </div>
       </div>
@@ -244,7 +250,7 @@ function Services() {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <Badge variant="secondary" className="rounded-full mb-4">What we do</Badge>
           <h2 className="text-4xl lg:text-5xl font-extrabold">IT Solutions & Services</h2>
-          <p className="mt-4 text-slate-600 text-lg">A recognised leader and challenger among professional and managed service providers — engineered for modern enterprise.</p>
+          <p className="mt-4 text-slate-600 text-lg">Focused technical expertise for organisations that need their systems to be more secure, useful, and ready for what comes next.</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -254,8 +260,9 @@ function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.05 }}>
-              <Card className="card-hover group h-full rounded-2xl border-slate-200 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 hover:shadow-2xl hover:shadow-indigo-600/30">
-                <CardContent className="p-8">
+              <Link href={`/services/${s.slug}`} className="block h-full">
+                <Card className="card-hover group h-full rounded-2xl border-slate-200 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 hover:shadow-2xl hover:shadow-indigo-600/30">
+                  <CardContent className="p-8">
                   <div className="h-14 w-14 rounded-xl bg-indigo-50 group-hover:bg-white/15 grid place-items-center mb-6 transition">
                     <s.icon className="h-7 w-7 text-indigo-600 group-hover:text-white transition" />
                   </div>
@@ -264,8 +271,9 @@ function Services() {
                   <div className="mt-6 inline-flex items-center gap-2 font-semibold text-indigo-600 group-hover:text-white">
                     Find out more <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                   </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -281,11 +289,11 @@ function Company() {
         <div className="relative">
           <div className="absolute -inset-6 bg-indigo-100 rounded-[2rem] -z-10" />
           <div className="bg-white rounded-3xl p-10 shadow-xl">
-            <div className="grid grid-cols-2 gap-6">
-              {STATS.map((s) => (
-                <div key={s.v} className="rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 text-white p-6">
-                  <div className="text-3xl font-extrabold">{s.k}</div>
-                  <div className="text-sm text-indigo-100 mt-1">{s.v}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {ENGAGEMENTS.map((s) => (
+                <div key={s.title} className="rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 text-white p-6">
+                  <div className="text-lg font-extrabold">{s.title}</div>
+                  <div className="text-sm text-indigo-100 mt-2 leading-relaxed">{s.desc}</div>
                 </div>
               ))}
             </div>
@@ -299,21 +307,21 @@ function Company() {
 
         <div>
           <Badge variant="secondary" className="rounded-full mb-4">Our company</Badge>
-          <h2 className="text-4xl lg:text-5xl font-extrabold">Build your product right.</h2>
+          <h2 className="text-4xl lg:text-5xl font-extrabold">Make technology work harder for your business.</h2>
           <p className="mt-5 text-slate-600 text-lg leading-relaxed">
             Building IT solutions is our passion. We boost your project performance by
             crafting platforms, products and data systems that meet every business need.
           </p>
           <p className="mt-4 text-slate-600 text-lg leading-relaxed">
-            With 100+ senior engineers, architects and SREs on staff, we partner with you on
-            full-cycle software development — or plug-in expertise exactly where you need it.
+            We work with business and technology leaders on focused initiatives, from planning and
+            architecture through implementation and ongoing improvement.
           </p>
           <div className="mt-8 space-y-3">
             {[
-              'Senior, vetted engineers — no juniors hidden in invoices',
-              'Outcome-based engagements with clear SLAs',
-              'Security & compliance baked-in from day one',
-              'Knowledge transfer so your team owns what we build',
+              'Clear recommendations grounded in your current environment',
+              'Practical delivery plans with visible priorities',
+              'Security considered from the start, not added later',
+              'Knowledge transfer so your team can operate with confidence',
             ].map((t) => (
               <div key={t} className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5" />
@@ -367,27 +375,19 @@ function CaseStudies() {
     <section id="cases" className="py-24 bg-slate-50">
       <div className="container mx-auto px-6 lg:px-10">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <Badge variant="secondary" className="rounded-full mb-4">Case studies</Badge>
-          <h2 className="text-4xl lg:text-5xl font-extrabold">What our clients say about <span className="text-indigo-600">Hexiware</span></h2>
-          <p className="mt-4 text-slate-600 text-lg">Start working with a team that delivers everything you need to generate awareness, drive traction and connect with customers.</p>
+          <Badge variant="secondary" className="rounded-full mb-4">Typical engagements</Badge>
+          <h2 className="text-4xl lg:text-5xl font-extrabold">Work shaped around your <span className="text-indigo-600">business</span></h2>
+          <p className="mt-4 text-slate-600 text-lg">Every environment is different. We start with the problem in front of you and build a focused path to a better outcome.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div key={t.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {ENGAGEMENTS.map((engagement, i) => (
+            <motion.div key={engagement.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
               <Card className="h-full rounded-2xl border-slate-200 hover:shadow-xl transition">
                 <CardContent className="p-8">
-                  <Quote className="h-7 w-7 text-amber-500 mb-4" />
-                  <div className="flex gap-1 mb-4">
-                    {Array.from({ length: 5 }).map((_, k) => (
-                      <svg key={k} className="h-4 w-4 text-amber-500" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118L10 14.347l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.644 8.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" /></svg>
-                    ))}
-                  </div>
-                  <p className="text-slate-700 leading-relaxed">“{t.quote}”</p>
-                  <div className="mt-6 pt-5 border-t border-slate-100">
-                    <div className="font-bold text-indigo-600">— {t.name}</div>
-                    <div className="text-sm text-slate-500">{t.role}</div>
-                  </div>
+                  <div className="text-sm font-semibold text-indigo-600">0{i + 1}</div>
+                  <h3 className="mt-4 text-xl font-bold">{engagement.title}</h3>
+                  <p className="mt-3 text-slate-600 leading-relaxed">{engagement.desc}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -403,12 +403,11 @@ function Enterprise() {
     <section className="py-24 bg-white">
       <div className="container mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-12 items-center">
         <div>
-          <Badge variant="secondary" className="rounded-full mb-4">Enterprise grade</Badge>
-          <h2 className="text-4xl lg:text-5xl font-extrabold">Focus on the enterprise at the core.</h2>
+          <Badge variant="secondary" className="rounded-full mb-4">Built for real-world teams</Badge>
+          <h2 className="text-4xl lg:text-5xl font-extrabold">Technology advice with business context.</h2>
           <p className="mt-5 text-slate-600 text-lg leading-relaxed">
-            Hexiware delivers cloud services for enterprise workloads in the public cloud. We are recognised by
-            Amazon Web Services as a Premier Consulting Partner — and trusted by regulated industries to migrate,
-            modernise and operate their most critical platforms.
+            Hexiware Consulting helps organisations make thoughtful technology decisions and turn them into
+            dependable systems. We can support a defined project or provide practical expertise where your team needs it.
           </p>
           <div className="mt-8 grid grid-cols-2 gap-4">
             {['Healthcare', 'Financial Services', 'Retail', 'Manufacturing', 'Public Sector', 'SaaS'].map((s) => (
@@ -418,11 +417,11 @@ function Enterprise() {
         </div>
         <div className="relative">
           <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-blue-700 p-10 text-white shadow-2xl">
-            <div className="text-sm uppercase tracking-widest text-indigo-200">Hexiware Platform</div>
-            <div className="mt-2 text-3xl font-extrabold">Observability that pays for itself</div>
-            <p className="mt-3 text-indigo-100">Unified dashboards across AWS, Azure & GCP. Cost, security and SLA in one pane.</p>
+            <div className="text-sm uppercase tracking-widest text-indigo-200">Hexiware Consulting</div>
+            <div className="mt-2 text-3xl font-extrabold">A clearer route forward</div>
+            <p className="mt-3 text-indigo-100">Architecture, delivery, and operational support aligned to your priorities and constraints.</p>
             <div className="mt-6 grid grid-cols-3 gap-3">
-              {[{k:'37+',v:'integrations'},{k:'24×7',v:'SOC support'},{k:'45 min',v:'avg MTTR'}].map((s)=>(
+              {[{k:'01',v:'Understand'},{k:'02',v:'Improve'},{k:'03',v:'Support'}].map((s)=>(
                 <div key={s.v} className="rounded-xl bg-white/10 p-4">
                   <div className="text-2xl font-bold">{s.k}</div>
                   <div className="text-xs text-indigo-200">{s.v}</div>
@@ -467,13 +466,12 @@ function Contact() {
           <Badge className="bg-white/15 border-white/20 text-white rounded-full mb-4">Get in touch</Badge>
           <h2 className="text-4xl lg:text-5xl font-extrabold">Let's build something resilient.</h2>
           <p className="mt-5 text-indigo-100 text-lg max-w-md">
-            Tell us about your challenge. A senior consultant will reply within one business day with a perspective —
-            not a sales pitch.
+            Tell us about your challenge and what you are trying to improve. We will review your message and get back to you.
           </p>
           <div className="mt-10 space-y-5">
             <div className="flex items-center gap-3"><Mail className="h-5 w-5" /><a href="mailto:hello@hexiware.com" className="hover:underline">hello@hexiware.com</a></div>
-            <div className="flex items-center gap-3"><Phone className="h-5 w-5" /><a href="tel:+18005550199">+1 (800) 555-0199</a></div>
-            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 mt-0.5" /><span>Suite 800, 250 Yonge Street,<br/>Toronto, ON M5B 2L7, Canada</span></div>
+            <div className="flex items-center gap-3"><Phone className="h-5 w-5" /><a href="tel:+14374638537">+1 (437) 463-8537</a></div>
+            <div className="flex items-start gap-3"><MapPin className="h-5 w-5 mt-0.5" /><span>250 Yonge St, Suite 800,<br/>Toronto, ON M5B 2H1, Canada</span></div>
           </div>
         </div>
         <form onSubmit={submit} className="bg-white text-slate-900 rounded-3xl p-8 shadow-2xl">
@@ -513,19 +511,12 @@ function Footer() {
           <p className="mt-5 text-slate-400 leading-relaxed">
             Start working with Hexiware and get ready for the next step in your cloud, data and AI journey.
           </p>
-          <div className="mt-6 flex items-center gap-3">
-            {[Facebook, Instagram, Twitter, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="h-9 w-9 rounded-full border border-slate-700 hover:border-indigo-400 hover:text-indigo-300 grid place-items-center transition">
-                <I className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
         </div>
         <div>
           <div className="text-white font-bold mb-5">Services</div>
           <ul className="space-y-3 text-sm">
             {SERVICES.map((s) => (
-              <li key={s.title}><a href="#services" className="hover:text-white">› {s.title}</a></li>
+              <li key={s.title}><Link href={`/services/${s.slug}`} className="hover:text-white">› {s.title}</Link></li>
             ))}
           </ul>
         </div>
@@ -549,15 +540,15 @@ function Footer() {
           <div className="text-white font-bold mb-5">Get In Touch</div>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> hello@hexiware.com</li>
-            <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +1 (800) 555-0199</li>
-            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5" /> <span>Suite 800, 250 Yonge Street,<br/>Toronto, ON M5B 2L7, Canada</span></li>
+            <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +1 (437) 463-8537</li>
+            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5" /> <span>250 Yonge St, Suite 800,<br/>Toronto, ON M5B 2H1, Canada</span></li>
           </ul>
         </div>
       </div>
       <div className="border-t border-slate-800">
         <div className="container mx-auto px-6 lg:px-10 py-6 flex flex-col sm:flex-row items-center justify-between text-sm text-slate-500">
-          <div>© {new Date().getFullYear()} Hexiware Consulting Inc. All rights reserved.</div>
-          <div>Crafted with care in Toronto · Made for the cloud.</div>
+          <div>© {new Date().getFullYear()} Hexiware Consulting. All rights reserved.</div>
+          <div>Toronto, Ontario</div>
         </div>
       </div>
     </footer>
